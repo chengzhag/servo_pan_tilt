@@ -668,6 +668,9 @@
     <ClCompile Include="common\edriver\ultrasonic_wave_uart.cpp">
       <Filter>Source files\common\edriver</Filter>
     </ClCompile>
+    <ClCompile Include="common\edriver\servo.cpp">
+      <Filter>Source files\common\edriver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\bigiot\bigiot.h">
@@ -1268,6 +1271,9 @@
       <Filter>Source files\common\util</Filter>
     </ClInclude>
     <ClInclude Include="common\edriver\ultrasonic_wave_uart.h">
+      <Filter>Header files\common\edriver</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\servo.h">
       <Filter>Header files\common\edriver</Filter>
     </ClInclude>
   </ItemGroup>

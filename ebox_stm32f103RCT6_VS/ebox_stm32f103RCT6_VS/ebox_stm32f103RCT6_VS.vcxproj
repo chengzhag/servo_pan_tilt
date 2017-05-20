@@ -110,6 +110,7 @@
     <ClCompile Include="common\edriver\OLED_ssd1306.cpp" />
     <ClCompile Include="common\edriver\parallel_gpio.cpp" />
     <ClCompile Include="common\edriver\PID.cpp" />
+    <ClCompile Include="common\edriver\servo.cpp" />
     <ClCompile Include="common\edriver\si4432.cpp" />
     <ClCompile Include="common\edriver\tb6612fng.cpp" />
     <ClCompile Include="common\edriver\TM1638.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="common\edriver\OLED_ssd1306.h" />
     <ClInclude Include="common\edriver\parallel_gpio.h" />
     <ClInclude Include="common\edriver\PID.hpp" />
+    <ClInclude Include="common\edriver\servo.h" />
     <ClInclude Include="common\edriver\si4432.h" />
     <ClInclude Include="common\edriver\tb6612fng.h" />
     <ClInclude Include="common\edriver\TM1638.h" />
