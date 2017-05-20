@@ -15,10 +15,11 @@
 #include "uart_num.h"
 #include "led.h"
 #include "servo_pan_tilt.h"
+#include "mpu9250.h"
 
 UartNum uartNum(&uart2);
 Led led(&PC13, 1);
-ServoPanTilt panTilt(&PB8, &PB9, &uart2, 0.02);
+ServoPanTilt panTilt(&PB8, &PB9, 0.02);
 
 void setup()
 {

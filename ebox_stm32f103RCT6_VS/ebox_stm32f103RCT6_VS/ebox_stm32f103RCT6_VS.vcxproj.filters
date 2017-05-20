@@ -312,6 +312,12 @@
     <Filter Include="Header files\Device-specific files">
       <UniqueIdentifier>{7c9dce9d-f0c7-4255-96f9-6031ec1dae08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header files\common\edriver\MPU9250">
+      <UniqueIdentifier>{fd7e6c2d-b813-401a-9ecc-f44ee22a261a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\common\edriver\MPU9250">
+      <UniqueIdentifier>{6ba93625-5b98-493a-bcf9-9179132d5b44}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common\edriver\74HC595.cpp">
@@ -673,6 +679,18 @@
     </ClCompile>
     <ClCompile Include="common\edriver\uart_num.cpp">
       <Filter>Source files\common\edriver</Filter>
+    </ClCompile>
+    <ClCompile Include="common\edriver\MPU9250\stm32_iic.cpp">
+      <Filter>Source files\common\edriver\MPU9250</Filter>
+    </ClCompile>
+    <ClCompile Include="common\edriver\MPU9250\eMPL\inv_mpu_dmp_motion_driver.cpp">
+      <Filter>Source files\common\edriver\MPU9250</Filter>
+    </ClCompile>
+    <ClCompile Include="common\edriver\MPU9250\eMPL\inv_mpu.cpp">
+      <Filter>Source files\common\edriver\MPU9250</Filter>
+    </ClCompile>
+    <ClCompile Include="common\edriver\MPU9250\mpu9250.cpp">
+      <Filter>Source files\common\edriver\MPU9250</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1284,6 +1302,24 @@
     </ClInclude>
     <ClInclude Include="common\edriver\uart_num.h">
       <Filter>Header files\common\edriver</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\stm32_iic.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\eMPL\dmpmap.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\eMPL\inv_mpu.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\eMPL\inv_mpu_dmp_motion_driver.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\eMPL\dmpKey.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\MPU9250\mpu9250.h">
+      <Filter>Header files\common\edriver\MPU9250</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
