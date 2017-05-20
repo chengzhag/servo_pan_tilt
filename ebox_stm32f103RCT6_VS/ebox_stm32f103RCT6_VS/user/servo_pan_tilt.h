@@ -19,8 +19,8 @@ class ServoPanTilt
 	float refreshInt;
 public:
 	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, Uart* uartMpu, float refreshInterval = 0.02, Uart* uartDebug = &uart1) :
-		servoY(pinServoYaw, 100),
-		servoP(pinServoPitch, 100),
+		servoY(pinServoYaw, 100, 0.7, 2.3),
+		servoP(pinServoPitch, 100, 0.7, 2.3),
 		uartM(uartMpu),
 		uartD(uartDebug),
 		refreshInt(refreshInterval)
@@ -73,6 +73,14 @@ public:
 #endif // __SERVO_PAN_TILT_DEBUG
 			
 		}
+	}
+
+	//重置目标角度为当前角度
+	void reset()
+	{
+		while (uartM.recievedNum != 3);
+		pidY.setDesiredPoint(uartM.numsBuf[0]);
+		pidP.setDesiredPoint(uartM.numsBuf[1]);
 	}
 };
 

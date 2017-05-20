@@ -27,6 +27,7 @@ void setup()
 	uart1.begin(9600);
 	led.begin();
 	panTilt.begin();
+	//panTilt.reset();
 }
 
 int main(void)
@@ -36,7 +37,7 @@ int main(void)
 	while (1)
 	{
 		//uartNum.printf("ok\n");
-		//led.toggle();
+		led.toggle();
 		delay_ms(20);
 		panTilt.refresh();
 		//uart1.printf("%d: ", uartNum.recievedNum);
