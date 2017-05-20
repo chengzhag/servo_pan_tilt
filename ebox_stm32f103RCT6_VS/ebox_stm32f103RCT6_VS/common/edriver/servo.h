@@ -13,6 +13,7 @@ class Servo
 	Pwm pwm;
 	uint32_t frq;
 	uint16_t limLow,limHigh;
+	float pct;
 
 	template<typename T>
 	static void limit(T &num, T limL, T limH);
@@ -30,6 +31,9 @@ public:
 
 	//设置百分比
 	void setPct(float percent);
+
+	//获取百分比
+	float getPct();
 };
 
 template<typename T>

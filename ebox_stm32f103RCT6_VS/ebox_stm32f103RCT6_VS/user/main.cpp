@@ -12,35 +12,43 @@
 */
 
 #include "ebox.h"
+#include "uart_num.h"
 #include "led.h"
-#include "servo.h"
+#include "servo_pan_tilt.h"
+#include "mpu9250.h"
 
+UartNum uartNum(&uart2);
 Led led(&PC13, 1);
-Servo servo(&PB9, 100);
+ServoPanTilt panTilt(&PB8, &PB9, 0.02);
+
 void setup()
 {
 	ebox_init();
-	uart1.begin(9600);
+	uartNum.begin(500000);
 	led.begin();
-	servo.begin();
+	panTilt.begin();
+	//panTilt.reset();
 }
+
 int main(void)
 {
 	setup();
-	float i = 100;
+
 	while (1)
 	{
-		//²âÊÔ¶æ»ú·¶Î§
-		i=i-0.1;
-		if (i < 0)
-		{
-			i = 100;
-		}
-		servo.setPct(i);
-
-		uart1.printf("%f\r\n", i);
-		delay_ms(10);
+		//uartNum.printf("ok\n");
 		led.toggle();
+		delay_ms(20);
+		panTilt.refresh();
+		//uart1.printf("%d: ", uartNum.recievedNum);
+		//if (uartNum.recievedNum == 3)
+		//{
+		//	for (int i = 0; i < uartNum.recievedNum; i++)
+		//	{
+		//		uart1.printf("%f ", uartNum.numsBuf[i]);
+		//	}
+		//}
+		//uart1.printf("\r\n");
 	}
 
 }
