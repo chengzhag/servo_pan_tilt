@@ -671,6 +671,9 @@
     <ClCompile Include="common\edriver\servo.cpp">
       <Filter>Source files\common\edriver</Filter>
     </ClCompile>
+    <ClCompile Include="common\edriver\uart_num.cpp">
+      <Filter>Source files\common\edriver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\bigiot\bigiot.h">
@@ -1274,6 +1277,12 @@
       <Filter>Header files\common\edriver</Filter>
     </ClInclude>
     <ClInclude Include="common\edriver\servo.h">
+      <Filter>Header files\common\edriver</Filter>
+    </ClInclude>
+    <ClInclude Include="user\servo_pan_tilt.h">
+      <Filter>Source files\user</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\uart_num.h">
       <Filter>Header files\common\edriver</Filter>
     </ClInclude>
   </ItemGroup>

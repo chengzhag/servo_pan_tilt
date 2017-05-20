@@ -114,6 +114,7 @@
     <ClCompile Include="common\edriver\si4432.cpp" />
     <ClCompile Include="common\edriver\tb6612fng.cpp" />
     <ClCompile Include="common\edriver\TM1638.cpp" />
+    <ClCompile Include="common\edriver\uart_num.cpp" />
     <ClCompile Include="common\edriver\uart_string.cpp" />
     <ClCompile Include="common\edriver\ultrasonic_wave.cpp" />
     <ClCompile Include="common\edriver\ultrasonic_wave_uart.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="common\edriver\si4432.h" />
     <ClInclude Include="common\edriver\tb6612fng.h" />
     <ClInclude Include="common\edriver\TM1638.h" />
+    <ClInclude Include="common\edriver\uart_num.h" />
     <ClInclude Include="common\edriver\uart_string.h" />
     <ClInclude Include="common\edriver\ultrasonic_wave.h" />
     <ClInclude Include="common\edriver\ultrasonic_wave_uart.h" />
@@ -398,6 +400,7 @@
     <ClInclude Include="user\bsp.h" />
     <ClInclude Include="user\FreeRTOSConfig.h" />
     <ClInclude Include="user\os_cfg.h" />
+    <ClInclude Include="user\servo_pan_tilt.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="MCU.xml" />
