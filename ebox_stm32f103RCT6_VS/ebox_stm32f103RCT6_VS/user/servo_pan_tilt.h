@@ -34,7 +34,7 @@ public:
 		servoY.begin();
 		servoP.begin();
 		uartM.begin(500000);
-		uartD->begin(9600);
+		uartD->begin(115200);
 
 		//≥ı ºªØyawPID
 		pidY.setRefreshInterval(refreshInt);

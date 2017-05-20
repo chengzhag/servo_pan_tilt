@@ -24,7 +24,6 @@ void setup()
 {
 	ebox_init();
 	uartNum.begin(500000);
-	uart1.begin(9600);
 	led.begin();
 	panTilt.begin();
 	//panTilt.reset();
