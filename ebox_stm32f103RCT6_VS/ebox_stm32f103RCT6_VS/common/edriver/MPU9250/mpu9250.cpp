@@ -63,10 +63,12 @@ volatile unsigned char rx_new;
 * board at Invensense. If needed, please modify the matrices to match the
 * chip-to-body matrix for your particular set up.
 */
-static signed char gyro_orientation[9] = { -1, 0, 0,
-0,-1, 0,
-0, 0, 1 };
-
+static signed char gyro_orientation[9] = { 0, 0, 1,
+1, 0, 0,
+0, 1, 0 };
+//static signed char gyro_orientation[9] = { 1, 0, 0,
+//0, 1, 0,
+//0, 0, 1 };
 
 enum packet_type_e
 {

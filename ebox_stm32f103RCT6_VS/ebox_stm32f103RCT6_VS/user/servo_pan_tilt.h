@@ -34,20 +34,21 @@ public:
 	{
 		servoY.begin();
 		servoP.begin();
+		servoP.setPct(8);
 		//uartM.begin(500000);
 		uartD->begin(115200);
 		mpu9250Init();
 
 		//初始化yawPID
 		pidY.setRefreshInterval(refreshInt);
-		pidY.setWeights(0.10, 0.15, 0.005);
+		pidY.setWeights(0.04, 0.04, 0.001);
 		pidY.setOutputLowerLimit(-INF_FLOAT);
 		pidY.setOutputUpperLimit(INF_FLOAT);
 		pidY.setDesiredPoint(0);
 
 		//初始化pitchPID
 		pidP.setRefreshInterval(refreshInt);
-		pidP.setWeights(0.12, 0.10, 0.004);
+		pidP.setWeights(0.04, 0.05, 0.001);
 		pidP.setOutputLowerLimit(-INF_FLOAT);
 		pidP.setOutputUpperLimit(INF_FLOAT);
 		pidP.setDesiredPoint(0);
@@ -65,12 +66,12 @@ public:
 		pctY += pidY.refresh(angleY);
 		pctP += pidP.refresh(angleP);
 
-		//servoY.setPct(pctY);
-		//servoP.setPct(pctP);
+		servoY.setPct(pctY);
+		servoP.setPct(pctP);
 
 #ifdef __SERVO_PAN_TILT_DEBUG
-		uartD->printf("yaw:%.1f\tpitch:%.1f\tyawOut:%.1f\tpitchOut:%.1f\r\n",
-			angleY, angleP, pctY, pctP);
+		uartD->printf("yaw:%.1f\tpitch:%.1f\trow:%.1f\tyawOut:%.1f\tpitchOut:%.1f\r\n",
+			angleY, angleP, angleR, pctY, pctP);
 #endif // __SERVO_PAN_TILT_DEBUG
 	}
 
