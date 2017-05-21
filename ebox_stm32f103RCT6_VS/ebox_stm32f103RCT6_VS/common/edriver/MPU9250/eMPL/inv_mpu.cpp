@@ -49,6 +49,26 @@
 
 #define i2c_write   i2cwrite
 #define i2c_read    i2cread
+//uint8_t i2c_write(unsigned char slave_addr, unsigned char reg_addr,
+//	unsigned char length, unsigned char *data)
+//{
+//	uint8_t r;
+//	i2c2.take_i2c_right(500000);
+//	r = i2c2.write_byte(slave_addr, reg_addr, data, length);
+//	i2c2.release_i2c_right();
+//	
+//	return r;
+//}
+//uint8_t i2c_read(unsigned char slave_addr, unsigned char reg_addr,
+//	unsigned char length, unsigned char *data)
+//{
+//	uint8_t r;
+//	i2c2.take_i2c_right(500000);
+//	r=i2c2.read_byte(slave_addr, reg_addr, data, length);
+//	i2c2.release_i2c_right();
+//
+//	return r;
+//}
 #define delay_ms    delay_ms
 #define get_ms(t)      *t=millis()
 

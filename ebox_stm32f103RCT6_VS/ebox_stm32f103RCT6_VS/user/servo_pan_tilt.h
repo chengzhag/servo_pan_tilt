@@ -34,7 +34,7 @@ public:
 	{
 		servoY.begin();
 		servoP.begin();
-		servoP.setPct(8);
+		//servoP.setPct(8);
 		//uartM.begin(500000);
 		uartD->begin(115200);
 		mpu9250Init();

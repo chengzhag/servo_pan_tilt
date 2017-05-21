@@ -66,6 +66,9 @@ volatile unsigned char rx_new;
 static signed char gyro_orientation[9] = { 0, 0, 1,
 1, 0, 0,
 0, 1, 0 };
+//static signed char gyro_orientation[9] = { 0, 1, 0,
+//-1, 0, 0,
+//0, 0, 1 };
 //static signed char gyro_orientation[9] = { 1, 0, 0,
 //0, 1, 0,
 //0, 0, 1 };
@@ -173,6 +176,10 @@ void mpu9250Init(void)
 	u16 count = 0;
 
 	i2cInit();      //IIC总线的初始化
+	//i2c2.take_i2c_right(500000);
+	//i2c2.begin(500000);
+	//i2c2.release_i2c_right();
+
 
 	PrintChar("mpu initialization......\n ");
 	result = mpu_init();
