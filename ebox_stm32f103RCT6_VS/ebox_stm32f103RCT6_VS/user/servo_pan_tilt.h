@@ -19,6 +19,8 @@ class ServoPanTilt
 	sky::PID pidY, pidP;
 	float refreshInt;
 public:
+	float angleY, angleP, angleR;
+
 	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, float refreshInterval = 0.02, Uart* uartDebug = &uart1) :
 		servoY(pinServoYaw, 100, 0.7, 2.3),
 		servoP(pinServoPitch, 100, 0.7, 2.3),
@@ -34,25 +36,25 @@ public:
 	{
 		servoY.begin();
 		servoP.begin();
-		servoP.setPct(8);
+		servoP.setPct(9);
 		//uartM.begin(500000);
 		uartD->begin(115200);
 		mpu9250Init();
 
 		//初始化yawPID
 		pidY.setRefreshInterval(refreshInt);
-		pidY.setWeights(0.04, 0.04, 0.001);
+		pidY.setWeights(0.05, 0.05, 0.001);
 		pidY.setOutputLowerLimit(-INF_FLOAT);
 		pidY.setOutputUpperLimit(INF_FLOAT);
-		pidY.setISeperateThres(5);
+		pidY.setISeperateThres(2);
 		pidY.setDesiredPoint(0);
 
 		//初始化pitchPID
 		pidP.setRefreshInterval(refreshInt);
-		pidP.setWeights(0.04, 0.05, 0.001);
+		pidP.setWeights(0.05, 0.05, 0.001);
 		pidP.setOutputLowerLimit(-INF_FLOAT);
 		pidP.setOutputUpperLimit(INF_FLOAT);
-		pidY.setISeperateThres(5);
+		pidY.setISeperateThres(2);
 		pidP.setDesiredPoint(0);
 	}
 
@@ -61,7 +63,6 @@ public:
 	{
 		float pctY = servoY.getPct();
 		float pctP = servoP.getPct();
-		float angleY, angleP, angleR;
 
 		mpu9250Read(angleP, angleR, angleY);
 

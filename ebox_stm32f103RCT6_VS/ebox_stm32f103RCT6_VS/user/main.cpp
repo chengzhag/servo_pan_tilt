@@ -18,7 +18,7 @@
 #include "mpu9250.h"
 
 Led led(&PC13, 1);
-ServoPanTilt panTilt(&PB8, &PB9, 0.02);
+ServoPanTilt panTilt(&PB8, &PB9, 0.01);
 
 void setup()
 {
@@ -28,15 +28,21 @@ void setup()
 	//panTilt.reset();
 }
 
+float angleY, angleP, angleR;
 int main(void)
 {
 	setup();
+	uint64_t time=0;
 
 	while (1)
 	{
 		led.toggle();
-		delay_ms(20);
+		delay_ms(8);
 		panTilt.refresh();
+
+		//ÏÔÊ¾Ë¢ÐÂÂÊ
+		uart1.printf("fps:%.1f\t", 1.0 / (millis() - time) * 1000);
+		time = millis();
 	}
 
 }
