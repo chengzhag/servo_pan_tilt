@@ -6,6 +6,7 @@
 #include "uart_num.h"
 #include "PID.hpp"
 #include "mpu9250.h"
+#include <math.h>
 
 #define INF_FLOAT 3.402823466e+38F
 
@@ -21,9 +22,9 @@ class ServoPanTilt
 public:
 	float angleY, angleP, angleR;
 
-	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, float refreshInterval = 0.02, Uart* uartDebug = &uart1) :
-		servoY(pinServoYaw, 100, 0.7, 2.3),
-		servoP(pinServoPitch, 100, 0.7, 2.3),
+	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, float refreshInterval = 0.01, Uart* uartDebug = &uart1) :
+		servoY(pinServoYaw, 1/refreshInterval, 0.7, 2.3),
+		servoP(pinServoPitch, 1/ refreshInterval, 0.7, 2.3),
 		//uartM(uartMpu),
 		uartD(uartDebug),
 		refreshInt(refreshInterval)
@@ -66,8 +67,13 @@ public:
 
 		mpu9250Read(angleP, angleR, angleY);
 
-		pctY += pidY.refresh(angleY);
-		pctP += pidP.refresh(angleP);
+		float pidYout = pidY.refresh(angleY);
+		float pidPout = pidP.refresh(angleP);
+
+		//pidYout = pidYout > 0 ? sqrt(pidYout) : (-sqrt(-pidYout));
+		//pidPout = pidPout > 0 ? sqrt(pidPout) : (-sqrt(-pidPout));
+		pctY += pidYout;
+		pctP += pidPout;
 
 		servoY.setPct(pctY);
 		servoP.setPct(pctP);
