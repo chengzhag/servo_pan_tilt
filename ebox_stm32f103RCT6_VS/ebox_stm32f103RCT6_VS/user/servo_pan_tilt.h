@@ -16,7 +16,7 @@ class ServoPanTilt
 	Servo servoY, servoP;
 	//UartNum uartM;
 	Uart*  uartD;
-	greg::PID pidY, pidP;
+	sky::PID pidY, pidP;
 	float refreshInt;
 public:
 	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, float refreshInterval = 0.02, Uart* uartDebug = &uart1) :
@@ -34,7 +34,7 @@ public:
 	{
 		servoY.begin();
 		servoP.begin();
-		//servoP.setPct(8);
+		servoP.setPct(8);
 		//uartM.begin(500000);
 		uartD->begin(115200);
 		mpu9250Init();
@@ -44,6 +44,7 @@ public:
 		pidY.setWeights(0.04, 0.04, 0.001);
 		pidY.setOutputLowerLimit(-INF_FLOAT);
 		pidY.setOutputUpperLimit(INF_FLOAT);
+		pidY.setISeperateThres(5);
 		pidY.setDesiredPoint(0);
 
 		//≥ı ºªØpitchPID
@@ -51,6 +52,7 @@ public:
 		pidP.setWeights(0.04, 0.05, 0.001);
 		pidP.setOutputLowerLimit(-INF_FLOAT);
 		pidP.setOutputUpperLimit(INF_FLOAT);
+		pidY.setISeperateThres(5);
 		pidP.setDesiredPoint(0);
 	}
 
