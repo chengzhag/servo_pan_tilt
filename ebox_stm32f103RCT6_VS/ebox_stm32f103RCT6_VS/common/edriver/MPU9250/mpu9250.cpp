@@ -22,81 +22,30 @@
 #define q30  1073741824.0f
 
 
-float q0 = 1.0f, q1 = 0.0f, q2 = 0.0f, q3 = 0.0f;
-
-
-
-int temp;
-
-
-struct rx_s
-{
-	unsigned char header[3];
-	unsigned char cmd;
-};
-
-
-struct hal_s
-{
-	unsigned char sensors;
-	unsigned char dmp_on;
-	unsigned char wait_for_tap;
-	volatile unsigned char new_gyro;
-	unsigned short report;
-	unsigned short dmp_features;
-	unsigned char motion_int_mode;
-	struct rx_s rx;
-};
-
-
-static struct hal_s hal = { 0 };
-
-/* USB RX binary semaphore. Actually, it's just a flag. Not included in struct
-* because it's declared extern elsewhere.
-*/
-volatile unsigned char rx_new;
-
-/* The sensors can be mounted onto the board in any orientation. The mounting
-* matrix seen below tells the MPL how to rotate the raw data from thei
-* driver(s).
-* TODO: The following matrices refer to the configuration on an internal test
-* board at Invensense. If needed, please modify the matrices to match the
-* chip-to-body matrix for your particular set up.
-*/
-static signed char gyro_orientation[9] = { 0, 0, 1,
-1, 0, 0,
-0, 1, 0 };
-//static signed char gyro_orientation[9] = { 0, 1, 0,
-//-1, 0, 0,
-//0, 0, 1 };
-//static signed char gyro_orientation[9] = { 1, 0, 0,
-//0, 1, 0,
-//0, 0, 1 };
-
-enum packet_type_e
-{
-	PACKET_TYPE_ACCEL,
-	PACKET_TYPE_GYRO,
-	PACKET_TYPE_QUAT,
-	PACKET_TYPE_TAP,
-	PACKET_TYPE_ANDROID_ORIENT,
-	PACKET_TYPE_PEDO,
-	PACKET_TYPE_MISC
-};
-
-
-//声明相关变量
-unsigned long sensor_timestamp;
-short gyro[3], accel[3], sensors;
-unsigned char more;
-long quat[4];
-
 //误差纠正
 #define  Pitch_error  /*1.0*/0
 #define  Roll_error   /*-2.0*/0
 #define  Yaw_error    0.0
 
-unsigned short inv_row_2_scale(const signed char *row)
+
+MPU9250::MPU9250() :
+	q0(1), q1(0), q2(0), q3(0)
+{
+	signed char defaultMatrix[] = { 0, 0, 1,
+		1, 0, 0,
+		0, 1, 0 };
+	setOrientationMatrix(defaultMatrix);
+}
+
+void MPU9250::setOrientationMatrix(signed char* matrix)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		gyro_orientation[i] = matrix[i];
+	}
+}
+
+unsigned short MPU9250::inv_row_2_scale(const signed char *row)
 {
 	unsigned short b;
 
@@ -117,7 +66,7 @@ unsigned short inv_row_2_scale(const signed char *row)
 	return b;
 }
 
-unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx)
+unsigned short MPU9250::inv_orientation_matrix_to_scalar(const signed char *mtx)
 {
 	unsigned short scalar;
 
@@ -138,7 +87,7 @@ unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx)
 	return scalar;
 }
 
-void run_self_test(void)
+void MPU9250::runSelfTest(void)
 {
 	int result;
 
@@ -170,7 +119,7 @@ void run_self_test(void)
 	}
 }
 
-void mpu9250Init(void)
+void MPU9250::begin(void)
 {
 	int result = 0;
 	u16 count = 0;
@@ -260,7 +209,7 @@ void mpu9250Init(void)
 			PrintChar("dmp_set_fifo_rate come across error ......\n");
 		}
 
-		run_self_test();
+		//runSelfTest();
 
 		if (!mpu_set_dmp_state(1))
 		{
@@ -274,7 +223,7 @@ void mpu9250Init(void)
 	}
 }
 
-void mpu9250Read(float &Pitch, float &Roll, float &Yaw)
+void MPU9250::readAngle(float &Pitch, float &Roll, float &Yaw)
 {
 
 

@@ -14,9 +14,9 @@
 
 class ServoPanTilt
 {
+	MPU9250 mpu;
 	Servo servoY, servoP;
-	//UartNum uartM;
-	Uart*  uartD;
+	Uart*  uart;
 	sky::PID pidY, pidP;
 	float refreshInt;
 public:
@@ -26,7 +26,7 @@ public:
 		servoY(pinServoYaw, 1/refreshInterval, 0.7, 2.3),
 		servoP(pinServoPitch, 1/ refreshInterval, 0.7, 2.3),
 		//uartM(uartMpu),
-		uartD(uartDebug),
+		uart(uartDebug),
 		refreshInt(refreshInterval)
 	{
 
@@ -38,9 +38,10 @@ public:
 		servoY.begin();
 		servoP.begin();
 		servoP.setPct(9);
-		//uartM.begin(500000);
-		uartD->begin(115200);
-		mpu9250Init();
+		uart->begin(115200);
+		delay_ms(1000);
+		mpu.begin();
+		mpu.runSelfTest();
 
 		//³õÊ¼»¯yawPID
 		pidY.setRefreshInterval(refreshInt);
@@ -65,7 +66,7 @@ public:
 		float pctY = servoY.getPct();
 		float pctP = servoP.getPct();
 
-		mpu9250Read(angleP, angleR, angleY);
+		mpu.readAngle(angleP, angleR, angleY);
 
 		float pidYout = pidY.refresh(angleY);
 		float pidPout = pidP.refresh(angleP);
@@ -79,7 +80,7 @@ public:
 		servoP.setPct(pctP);
 
 #ifdef __SERVO_PAN_TILT_DEBUG
-		uartD->printf("yaw:%.1f\tpitch:%.1f\trow:%.1f\tyawOut:%.1f\tpitchOut:%.1f\r\n",
+		uart->printf("yaw:%.1f\tpitch:%.1f\trow:%.1f\tyawOut:%.1f\tpitchOut:%.1f\r\n",
 			angleY, angleP, angleR, pctY, pctP);
 #endif // __SERVO_PAN_TILT_DEBUG
 	}
@@ -89,8 +90,7 @@ public:
 	{
 		float angleY, angleP, angleR;
 
-		mpu9250Read(angleP, angleR, angleY);
-		//while (uartM.recievedNum != 3);
+		mpu.readAngle(angleP, angleR, angleY);
 		pidY.setDesiredPoint(angleY);
 		pidP.setDesiredPoint(angleR);
 	}
