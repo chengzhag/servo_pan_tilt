@@ -31,9 +31,9 @@
 MPU9250::MPU9250() :
 	q0(1), q1(0), q2(0), q3(0)
 {
-	signed char defaultMatrix[] = { 0, 0, 1,
-		1, 0, 0,
-		0, 1, 0 };
+	signed char defaultMatrix[] = { 1,0,0,
+	0,1,0,
+	0,0,1 };
 	setOrientationMatrix(defaultMatrix);
 }
 

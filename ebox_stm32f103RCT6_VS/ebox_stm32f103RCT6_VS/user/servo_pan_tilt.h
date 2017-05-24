@@ -25,7 +25,6 @@ public:
 	ServoPanTilt(Gpio* pinServoYaw, Gpio* pinServoPitch, float refreshInterval = 0.01, Uart* uartDebug = &uart1) :
 		servoY(pinServoYaw, 1/refreshInterval, 0.7, 2.3),
 		servoP(pinServoPitch, 1/ refreshInterval, 0.7, 2.3),
-		//uartM(uartMpu),
 		uart(uartDebug),
 		refreshInt(refreshInterval)
 	{
@@ -40,15 +39,21 @@ public:
 		servoP.setPct(9);
 		uart->begin(115200);
 		delay_ms(1000);
+
+		//初始化mpu
+		signed char matrix[] = { 0, 0, 1,
+			1, 0, 0,
+			0, 1, 0 };
+		mpu.setOrientationMatrix(matrix);
 		mpu.begin();
-		mpu.runSelfTest();
+		mpu.runSelfTest();//自检时保持水平，此处会校准误差
 
 		//初始化yawPID
 		pidY.setRefreshInterval(refreshInt);
 		pidY.setWeights(0.05, 0.05, 0.001);
 		pidY.setOutputLowerLimit(-INF_FLOAT);
 		pidY.setOutputUpperLimit(INF_FLOAT);
-		pidY.setISeperateThres(2);
+		pidY.setISeperateThres(4);
 		pidY.setDesiredPoint(0);
 
 		//初始化pitchPID
@@ -56,7 +61,7 @@ public:
 		pidP.setWeights(0.05, 0.05, 0.001);
 		pidP.setOutputLowerLimit(-INF_FLOAT);
 		pidP.setOutputUpperLimit(INF_FLOAT);
-		pidY.setISeperateThres(2);
+		pidY.setISeperateThres(4);
 		pidP.setDesiredPoint(0);
 	}
 

@@ -77,6 +77,7 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="common\edriver\74HC595.cpp" />
+    <ClCompile Include="common\edriver\accurate_pwm.cpp" />
     <ClCompile Include="common\edriver\at24c02.cpp" />
     <ClCompile Include="common\edriver\at45db.cpp" />
     <ClCompile Include="common\edriver\Button.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="common\bigiot\bigiot_port.h" />
     <ClInclude Include="common\cJSON\cJSON.h" />
     <ClInclude Include="common\edriver\74HC595.h" />
+    <ClInclude Include="common\edriver\accurate_pwm.h" />
     <ClInclude Include="common\edriver\at24c02.h" />
     <ClInclude Include="common\edriver\at45db.h" />
     <ClInclude Include="common\edriver\Button.h" />
@@ -329,6 +331,7 @@
     <ClInclude Include="common\util\ebox_mem.h" />
     <ClInclude Include="common\util\heap.h" />
     <ClInclude Include="common\util\itoa.h" />
+    <ClInclude Include="common\util\my_math.h" />
     <ClInclude Include="common\util\print.h" />
     <ClInclude Include="common\util\printable.h" />
     <ClInclude Include="common\util\ringbuf.h" />

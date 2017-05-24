@@ -692,6 +692,9 @@
     <ClCompile Include="common\edriver\MPU9250\mpu9250.cpp">
       <Filter>Source files\common\edriver\MPU9250</Filter>
     </ClCompile>
+    <ClCompile Include="common\edriver\accurate_pwm.cpp">
+      <Filter>Source files\common\edriver</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\bigiot\bigiot.h">
@@ -1288,9 +1291,6 @@
     <ClInclude Include="common\edriver\uart_string.h">
       <Filter>Header files\common\edriver</Filter>
     </ClInclude>
-    <ClInclude Include="common\util\signal_stream.h">
-      <Filter>Source files\common\util</Filter>
-    </ClInclude>
     <ClInclude Include="common\edriver\ultrasonic_wave_uart.h">
       <Filter>Header files\common\edriver</Filter>
     </ClInclude>
@@ -1320,6 +1320,15 @@
     </ClInclude>
     <ClInclude Include="common\edriver\MPU9250\mpu9250.h">
       <Filter>Header files\common\edriver\MPU9250</Filter>
+    </ClInclude>
+    <ClInclude Include="common\edriver\accurate_pwm.h">
+      <Filter>Header files\common\edriver</Filter>
+    </ClInclude>
+    <ClInclude Include="common\util\my_math.h">
+      <Filter>Header files\common\util</Filter>
+    </ClInclude>
+    <ClInclude Include="common\util\signal_stream.h">
+      <Filter>Header files\common\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
