@@ -50,7 +50,7 @@ public:
 
 		//初始化yawPID
 		pidY.setRefreshInterval(refreshInt);
-		pidY.setWeights(0.05, 0.05, 0.001);
+		pidY.setWeights(0.05, 0.01, 0.001);
 		pidY.setOutputLowerLimit(-INF_FLOAT);
 		pidY.setOutputUpperLimit(INF_FLOAT);
 		pidY.setISeperateThres(4);
@@ -58,7 +58,7 @@ public:
 
 		//初始化pitchPID
 		pidP.setRefreshInterval(refreshInt);
-		pidP.setWeights(0.05, 0.05, 0.001);
+		pidP.setWeights(0.05, 0.01, 0.001);
 		pidP.setOutputLowerLimit(-INF_FLOAT);
 		pidP.setOutputUpperLimit(INF_FLOAT);
 		pidY.setISeperateThres(4);

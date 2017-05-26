@@ -43,6 +43,11 @@ int main(void)
 		//显示刷新率
 		uart1.printf("fps:%.1f\t", 1.0 / (millis() - time) * 1000);
 		time = millis();
+
+		//刷新全局变量数字，便于调试
+		angleY = panTilt.angleY;
+		angleP = panTilt.angleP;
+		angleR = panTilt.angleR;
 	}
 
 }
