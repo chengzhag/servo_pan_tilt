@@ -235,7 +235,7 @@ void MPU9250::begin(uint16_t sampleRate)
 	}
 }
 
-void MPU9250::readAngle(float &Pitch, float &Roll, float &Yaw)
+void MPU9250::readDMP(float &pitch, float &roll, float &yaw)
 {
 		dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);
 		/* Gyro and accel data are written to the FIFO by the DMP in chip
@@ -259,9 +259,9 @@ void MPU9250::readAngle(float &Pitch, float &Roll, float &Yaw)
 			q2 = quat[2] / q30;
 			q3 = quat[3] / q30;
 
-			Pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3 + Pitch_error; // pitch
-			Roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3 + Roll_error; // roll
-			Yaw = atan2(2 * (q1*q2 + q0*q3), q0*q0 + q1*q1 - q2*q2 - q3*q3) * 57.3 + Yaw_error;
+			pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3 + Pitch_error; // pitch
+			roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3 + Roll_error; // roll
+			yaw = atan2(2 * (q1*q2 + q0*q3), q0*q0 + q1*q1 - q2*q2 - q3*q3) * 57.3 + Yaw_error;
 		}
 }
 

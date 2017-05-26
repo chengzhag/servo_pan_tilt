@@ -86,7 +86,7 @@ public:
 	void begin(uint16_t sampleRate=200);
 
 	//获取姿态角
-	void readAngle(float &Pitch, float  &Roll, float  &Yaw);
+	void readDMP(float &pitch, float &roll, float &yaw);
 
 
 	//以下设置均在初始化之前进行

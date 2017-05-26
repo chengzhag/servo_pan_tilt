@@ -71,7 +71,7 @@ public:
 		float pctY = servoY.getPct();
 		float pctP = servoP.getPct();
 
-		mpu.readAngle(angleP, angleR, angleY);
+		mpu.readDMP(angleP, angleR, angleY);
 
 		float pidYout = pidY.refresh(angleY);
 		float pidPout = pidP.refresh(angleP);
@@ -95,7 +95,7 @@ public:
 	{
 		float angleY, angleP, angleR;
 
-		mpu.readAngle(angleP, angleR, angleY);
+		mpu.readDMP(angleP, angleR, angleY);
 		pidY.setDesiredPoint(angleY);
 		pidP.setDesiredPoint(angleR);
 	}
