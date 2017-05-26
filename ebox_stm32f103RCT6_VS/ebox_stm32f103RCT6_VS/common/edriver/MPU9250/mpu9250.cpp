@@ -1,7 +1,12 @@
 #include "mpu9250.h"
 
-#define PrintChar uart1.print
+#include "stm32f10x.h"
+#include "inv_mpu_dmp_motion_driver.h"
+#include "inv_mpu.h"
+#include "math.h"
+#include "stm32_iic.h"
 
+//#define __MPU9250_DEBUG
 
 #define PRINT_ACCEL     (0x01)
 #define PRINT_GYRO      (0x02)
@@ -29,7 +34,9 @@
 
 
 MPU9250::MPU9250() :
-	q0(1), q1(0), q2(0), q3(0)
+	q0(1), q1(0), q2(0), q3(0),
+	sampleRate(200),
+	uart(&uart1)
 {
 	signed char defaultMatrix[] = { 1,0,0,
 	0,1,0,
@@ -43,6 +50,11 @@ void MPU9250::setOrientationMatrix(signed char* matrix)
 	{
 		gyro_orientation[i] = matrix[i];
 	}
+}
+
+void MPU9250::setUartDebug(Uart* uartX)
+{
+	uart = uartX;
 }
 
 unsigned short MPU9250::inv_row_2_scale(const signed char *row)
@@ -87,7 +99,7 @@ unsigned short MPU9250::inv_orientation_matrix_to_scalar(const signed char *mtx)
 	return scalar;
 }
 
-void MPU9250::runSelfTest(void)
+void MPU9250::calibrate(void)
 {
 	int result;
 
@@ -111,18 +123,18 @@ void MPU9250::runSelfTest(void)
 		accel[1] *= accel_sens;
 		accel[2] *= accel_sens;
 		dmp_set_accel_bias(accel);
-		PrintChar("setting bias succesfully ......\n");
+		uart->printf("setting bias succesfully ......\n");
 	}
 	else
 	{
-		PrintChar("bias has not been modified ......\n");
+		uart->printf("bias has not been modified ......\n");
 	}
 }
 
-void MPU9250::begin(void)
+void MPU9250::begin(uint16_t sampleRate)
 {
+	setSampleRate(sampleRate);
 	int result = 0;
-	u16 count = 0;
 
 	i2cInit();      //IIC总线的初始化
 	//i2c2.take_i2c_right(500000);
@@ -130,61 +142,61 @@ void MPU9250::begin(void)
 	//i2c2.release_i2c_right();
 
 
-	PrintChar("mpu initialization......\n ");
+	uart->printf("mpu initialization......\n ");
 	result = mpu_init();
 
 	if (!result)   //返回0代表初始化成功
 	{
-		PrintChar("mpu initialization complete......\n ");
+		uart->printf("mpu initialization complete......\n ");
 
 		//mpu_set_sensor
-		if (!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL))
+		if (!mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS))
 		{
-			PrintChar("mpu_set_sensor complete ......\n");
+			uart->printf("mpu_set_sensor complete ......\n");
 		}
 		else
 		{
-			PrintChar("mpu_set_sensor come across error ......\n");
+			uart->printf("mpu_set_sensor come across error ......\n");
 		}
 
 		//mpu_configure_fifo
-		if (!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL))
+		if (!mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS))
 		{
-			PrintChar("mpu_configure_fifo complete ......\n");
+			uart->printf("mpu_configure_fifo complete ......\n");
 		}
 		else
 		{
-			PrintChar("mpu_configure_fifo come across error ......\n");
+			uart->printf("mpu_configure_fifo come across error ......\n");
 		}
 
 		//mpu_set_sample_rate
-		if (!mpu_set_sample_rate(DEFAULT_MPU_HZ))
+		if (!mpu_set_sample_rate(sampleRate))
 		{
-			PrintChar("mpu_set_sample_rate complete ......\n");
+			uart->printf("mpu_set_sample_rate complete ......\n");
 		}
 		else
 		{
-			PrintChar("mpu_set_sample_rate error ......\n");
+			uart->printf("mpu_set_sample_rate error ......\n");
 		}
 
 		//dmp_load_motion_driver_firmvare
 		if (!dmp_load_motion_driver_firmware())
 		{
-			PrintChar("dmp_load_motion_driver_firmware complete ......\n");
+			uart->printf("dmp_load_motion_driver_firmware complete ......\n");
 		}
 		else
 		{
-			PrintChar("dmp_load_motion_driver_firmware come across error ......\n");
+			uart->printf("dmp_load_motion_driver_firmware come across error ......\n");
 		}
 
 		//dmp_set_orientation
 		if (!dmp_set_orientation(inv_orientation_matrix_to_scalar(gyro_orientation)))
 		{
-			PrintChar("dmp_set_orientation complete ......\n");
+			uart->printf("dmp_set_orientation complete ......\n");
 		}
 		else
 		{
-			PrintChar("dmp_set_orientation come across error ......\n");
+			uart->printf("dmp_set_orientation come across error ......\n");
 		}
 
 		//dmp_enable_feature
@@ -192,32 +204,32 @@ void MPU9250::begin(void)
 			DMP_FEATURE_ANDROID_ORIENT | DMP_FEATURE_SEND_RAW_ACCEL | DMP_FEATURE_SEND_CAL_GYRO |
 			DMP_FEATURE_GYRO_CAL))
 		{
-			PrintChar("dmp_enable_feature complete ......\n");
+			uart->printf("dmp_enable_feature complete ......\n");
 		}
 		else
 		{
-			PrintChar("dmp_enable_feature come across error ......\n");
+			uart->printf("dmp_enable_feature come across error ......\n");
 		}
 
 		//dmp_set_fifo_rate
-		if (!dmp_set_fifo_rate(DEFAULT_MPU_HZ))
+		if (!dmp_set_fifo_rate(sampleRate))
 		{
-			PrintChar("dmp_set_fifo_rate complete ......\n");
+			uart->printf("dmp_set_fifo_rate complete ......\n");
 		}
 		else
 		{
-			PrintChar("dmp_set_fifo_rate come across error ......\n");
+			uart->printf("dmp_set_fifo_rate come across error ......\n");
 		}
 
 		//runSelfTest();
 
 		if (!mpu_set_dmp_state(1))
 		{
-			PrintChar("mpu_set_dmp_state complete ......\n");
+			uart->printf("mpu_set_dmp_state complete ......\n");
 		}
 		else
 		{
-			PrintChar("mpu_set_dmp_state come across error ......\n");
+			uart->printf("mpu_set_dmp_state come across error ......\n");
 		}
 
 	}
@@ -225,9 +237,6 @@ void MPU9250::begin(void)
 
 void MPU9250::readAngle(float &Pitch, float &Roll, float &Yaw)
 {
-
-
-		//float Yaw,Roll,Pitch;
 		dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more);
 		/* Gyro and accel data are written to the FIFO by the DMP in chip
 		* frame and hardware units. This behavior is convenient because it
@@ -254,4 +263,9 @@ void MPU9250::readAngle(float &Pitch, float &Roll, float &Yaw)
 			Roll = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3 + Roll_error; // roll
 			Yaw = atan2(2 * (q1*q2 + q0*q3), q0*q0 + q1*q1 - q2*q2 - q3*q3) * 57.3 + Yaw_error;
 		}
+}
+
+void MPU9250::setSampleRate(uint16_t sampleRate)
+{
+	this->sampleRate = sampleRate;
 }

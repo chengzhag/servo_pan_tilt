@@ -1,25 +1,6 @@
 #ifndef __MPU9250_H
 #define __MPU9250_H
 
-/***************************************************
-
-*文件描述:
-*         根据官方DMP库用MPU9250解姿态
-输出为Yaw,pitch,Roll值（角度值）
-参考网上部分代码
-*Author:
-*         王馨 @ UESTC
-*Time:
-*					2015.3.30
-*version:
-*         v1.0
-***************************************************/
-
-#include "stm32f10x.h"
-#include "inv_mpu_dmp_motion_driver.h"
-#include "inv_mpu.h"
-#include "math.h"
-#include "stm32_iic.h"
 #include "ebox.h"
 
 
@@ -77,12 +58,13 @@ class MPU9250
 	unsigned char more;
 	long quat[4];
 
-public:
+	//设置参数
+	uint16_t sampleRate;
+	Uart* uart;
 
-	MPU9250();
+	//私有函数
 
-	void setOrientationMatrix(signed char* matrix);
-
+	//转换安装角矩阵
 	/* These next two functions converts the orientation matrix (see
 	* gyro_orientation) to a scalar representation for use by the DMP.
 	* NOTE: These functions are borrowed from Invensense's MPL.
@@ -91,13 +73,32 @@ public:
 
 	unsigned short inv_orientation_matrix_to_scalar(const signed char *mtx);
 
-	/*自检函数*/
-	static void runSelfTest(void);
+public:
 
-	void begin(void);
+	MPU9250();
 
+	
+
+	//校准，放置水平
+	void calibrate(void);
+
+	//初始化mpu9250和dmp
+	void begin(uint16_t sampleRate=200);
+
+	//获取姿态角
 	void readAngle(float &Pitch, float  &Roll, float  &Yaw);
 
+
+	//以下设置均在初始化之前进行
+
+	//设置采样率
+	void setSampleRate(uint16_t sampleRate);
+	//通过3*3矩阵设置安装方向
+	void setOrientationMatrix(signed char* matrix);
+	//设置使能的传感器
+
+	//设置debug用uart
+	void setUartDebug(Uart* uartX);
 };
 
 

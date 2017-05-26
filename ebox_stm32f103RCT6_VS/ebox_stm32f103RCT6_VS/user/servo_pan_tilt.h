@@ -45,8 +45,8 @@ public:
 			1, 0, 0,
 			0, 1, 0 };
 		mpu.setOrientationMatrix(matrix);
-		mpu.begin();
-		mpu.runSelfTest();//自检时保持水平，此处会校准误差
+		mpu.begin(200);
+		mpu.calibrate();//自检时保持水平，此处会校准误差
 
 		//初始化yawPID
 		pidY.setRefreshInterval(refreshInt);
